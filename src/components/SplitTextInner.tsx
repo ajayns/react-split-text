@@ -24,6 +24,7 @@ export const SplitTextInner: FC<SplitTextProps> = forwardRef(
       WordWrapper = DefaultWordWrapper,
       LetterWrapper = DefaultLetterWrapper,
       lineCountRef,
+      countUpdateCallback,
       extraProps,
     },
     ref
@@ -63,7 +64,14 @@ export const SplitTextInner: FC<SplitTextProps> = forwardRef(
         words.push((child.textContent || '').trim());
       }
       newLines.push(words.join(' '));
-      setLines(newLines);
+      setLines(newLines, () => {
+        if (countUpdateCallback) {
+          countUpdateCallback({
+            lines: newLines.length,
+            words: words.length
+          });
+        }
+      });
       
       if (linesCountRef) {
         linesCountRef.current = newLines.length;
@@ -120,7 +128,7 @@ export const SplitTextInner: FC<SplitTextProps> = forwardRef(
           return (
             <LineWrapper key={i} lineIndex={i} extraProps={extraProps}>
               {words.map((word, j) => {
-                const letters = word.split('');
+                // const letters = word.split('');
                 return (
                   <WordWrapper
                     key={j}
@@ -129,7 +137,7 @@ export const SplitTextInner: FC<SplitTextProps> = forwardRef(
                     countIndex={wordCount++}
                     extraProps={extraProps}
                   >
-                    {letters.map((char, k) => (
+                    {% letters.map((char, k) => (
                       <LetterWrapper
                         key={k}
                         lineIndex={i}
@@ -140,7 +148,8 @@ export const SplitTextInner: FC<SplitTextProps> = forwardRef(
                       >
                         {char}
                       </LetterWrapper>
-                    ))}
+                    )) %}
+                    {word}
                   </WordWrapper>
                 );
               })}
