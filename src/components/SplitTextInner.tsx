@@ -23,6 +23,7 @@ export const SplitTextInner: FC<SplitTextProps> = forwardRef(
       LineWrapper = DefaultLineWrapper,
       WordWrapper = DefaultWordWrapper,
       LetterWrapper = DefaultLetterWrapper,
+      lineCountRef,
       extraProps,
     },
     ref
@@ -93,6 +94,10 @@ export const SplitTextInner: FC<SplitTextProps> = forwardRef(
 
     let wordCount = 0;
     let letterCount = 0;
+      
+    if (linesCountRef) {
+      linesCountRef.current = lines.length;
+    }
 
     return lines.length ? (
       <div
