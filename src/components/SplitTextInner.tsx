@@ -64,6 +64,10 @@ export const SplitTextInner: FC<SplitTextProps> = forwardRef(
       }
       newLines.push(words.join(' '));
       setLines(newLines);
+      
+      if (linesCountRef) {
+        linesCountRef.current = newLines.length;
+      }
     }
 
     function refreshLines(previous: string[], newText: string) {
@@ -94,10 +98,6 @@ export const SplitTextInner: FC<SplitTextProps> = forwardRef(
 
     let wordCount = 0;
     let letterCount = 0;
-      
-    if (linesCountRef) {
-      linesCountRef.current = lines.length;
-    }
 
     return lines.length ? (
       <div
